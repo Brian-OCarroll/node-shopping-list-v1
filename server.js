@@ -8,7 +8,12 @@ const bodyParser = require('body-parser');
 
 // we import the ShoppingList model, which we'll
 // interact with in our GET endpoint
+//same thing as const models = require('./models'); then
+//const ShoppingList = models.ShoppingList;
 const {ShoppingList} = require('./models');
+//import Recipes model, same as requiring and then going into
+//models.Recipes
+const {Recipes}  = require('./models');
 
 const jsonParser = bodyParser.json();
 const app = express();
@@ -24,11 +29,18 @@ app.use(morgan('common'));
 ShoppingList.create('beans', 2);
 ShoppingList.create('tomatoes', 3);
 ShoppingList.create('peppers', 4);
+//adding names, and ingredients to Recipes map
+Recipes.create('pancakes', ['eggs','milk','flower']);
+Recipes.create('chocolate milk', ['cocoa', 'milk', 'sugar']);
 
 // when the root of this route is called with GET, return
 // all current ShoppingList items by calling `ShoppingList.get()`
 app.get('/shopping-list', (req, res) => {
   res.json(ShoppingList.get());
+});
+//get list of created recipes
+app.get('/recipes', (req, res) => {
+  res.json(Recipes.get());
 });
 
 app.listen(process.env.PORT || 8080, () => {
